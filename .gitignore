@@ -1,0 +1,34 @@
+# IDE
+.idea/
+*.iml
+.vscode/
+
+# Node
+node_modules/
+
+# Java
+target/
+build/
+out/
+
+# Gradle
+.gradle/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Bai thi
+thi_ket_thuc_module_1/
+thi_ket_thuc_module_2/
+thi_ket_thuc_module_3/
+ThiKetThucModule2/
+on_thi_module_1/
+
+# Document
+module_2/C0225L1_document/
+module_3/module_3_document/
+module_4/module_4_document/
