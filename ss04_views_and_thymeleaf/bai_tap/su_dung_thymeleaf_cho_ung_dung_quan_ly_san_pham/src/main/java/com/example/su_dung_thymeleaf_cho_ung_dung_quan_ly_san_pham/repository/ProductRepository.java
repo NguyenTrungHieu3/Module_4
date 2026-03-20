@@ -47,13 +47,11 @@ public class ProductRepository implements IProductRepository {
         return false;
     }
 
-    @Transactional
     @Override
     public Product getProductById(int id) {
         return entityManager.find(Product.class, id);
     }
 
-    @Transactional
     @Override
     public List<Product> searchProductsByName(String name) {
         TypedQuery<Product> query = entityManager.createQuery("FROM Product WHERE name LIKE :name", Product.class);
