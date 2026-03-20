@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout/layout::head('Product Detail', ~{})}"/>
+<body>
+
+<div class="container mt-5">
+
+    <div class="card shadow-lg">
+        <div class="card-header bg-primary text-white">
+            <h3 class="mb-0">Product Detail</h3>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">ID:</div>
+                <div class="col-md-8" th:text="${product.id}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Name:</div>
+                <div class="col-md-8" th:text="${product.name}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Price:</div>
+                <div class="col-md-8 text-success fw-bold"
+                     th:text="${#numbers.formatDecimal(product.price, 0, 'COMMA', 0, 'POINT')} + ' VND'">
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Description:</div>
+                <div class="col-md-8" th:text="${product.description}"></div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-4 fw-bold">Manufacturer:</div>
+                <div class="col-md-8" th:text="${product.manufacturer}"></div>
+            </div>
+
+        </div>
+
+        <div class="card-footer text-end">
+            <a th:href="@{/product}" class="btn btn-secondary">Back</a>
+            <a th:href="@{/product/edit/{id}(id=${product.id})}" class="btn btn-warning">Edit</a>
+            <a th:href="@{/product/delete/{id}(id=${product.id})}" class="btn btn-danger"
+               onclick="return confirm('Are you sure?')">Delete</a>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:fragment="head(title, extraCss)">
+    <meta charset="UTF-8">
+    <title th:text="${title}">App</title>
+        <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+        <th:block th:replace="${extraCss}"></th:block>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark px-3" th:fragment="navbar(activeMenu)">
+    <a class="navbar-brand" th:href="@{/}">Admin</a>
+    <div class="collapse navbar-collapse">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:classappend="${activeMenu == 'dashboard'} ? ' active' : ''"
+                   th:href="@{/dashboard}">Dashboard</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"
+                   th:classappend="${activeMenu == 'product'} ? ' active' : ''"
+                   th:href="@{/product}">Products</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<th:block th:fragment="scripts(extraJs)">
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <th:block th:replace="${extraJs}"></th:block>
+</th:block>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add Student</title>
+    <th:block th:insert="~{layout/layout::library}"/>
+</head>
+<body>
+<th:block th:replace="~{layout/layout::my-navbar}"/>
+<h1>Create student</h1>
+<form action="/student/add" method="post" th:object="${student}">
+    ID:<input th:field="*{id}" placeholder="enter id"><br>
+    Name:<input th:field="*{name}" placeholder="enter name"><br>
+    Gender:<input type="radio" th:field="*{gender}" value="true"> Male
+    <input type="radio" th:field="*{gender}" value="false"> Female<br>
+    <button>Save</button>
+</form>
+</body>
+</html>

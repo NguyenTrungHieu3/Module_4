@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Detail</title>
+  <th:block th:insert="~{layout/layout::library}"/>
+</head>
+<body>
+<th:block th:replace="~{layout/layout::my-navbar}"/>
+<h2>Student Detail</h2>
+ID: <span th:text="${student.id}"></span><br>
+Name: <span th:text="${student.name}"></span>
+</body>
+</html>
