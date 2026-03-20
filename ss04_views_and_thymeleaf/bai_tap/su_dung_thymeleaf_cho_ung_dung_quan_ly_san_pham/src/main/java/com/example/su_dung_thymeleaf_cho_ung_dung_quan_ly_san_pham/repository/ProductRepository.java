@@ -16,7 +16,6 @@ public class ProductRepository implements IProductRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
-    @Transactional
     @Override
     public List<Product> getAllProducts() {
         TypedQuery<Product> query = entityManager.createQuery("FROM Product ", Product.class);
