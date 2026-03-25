@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+
+<!-- ═══════════════════════════════════════════════
+     FRAGMENT 1: <head>
+     Dùng: th:replace="~{layout :: head('Tiêu đề', ~{::link})}"
+     ═══════════════════════════════════════════════ -->
+<head th:fragment="head(title, extraCss)">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title} + ' — MyBlog'">MyBlog</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;700&family=Nunito:wght@400;500;600&display=swap"
+          rel="stylesheet">
+
+    <style>
+        /* ── Chỉ override những thứ Bootstrap không có sẵn ── */
+        body          { font-family: 'Nunito', sans-serif; background-color: #f5f5f0; }
+        h1,h2,h3,.font-serif { font-family: 'Lora', Georgia, serif; }
+
+        .navbar-brand-text { font-family: 'Lora', serif; font-size: 1.5rem; }
+
+        /* Active nav-link gạch chân vàng */
+        .nav-link.active { border-bottom: 2px solid #ffc107 !important; padding-bottom: 2px; }
+
+        /* Card hover nổi lên */
+        .post-card { transition: transform .18s ease, box-shadow .18s ease; }
+        .post-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 16px 32px rgba(0,0,0,.12) !important;
+        }
+
+        /* Nội dung bài viết */
+        .article-body { font-size: 1.06rem; line-height: 1.9; }
+
+        /* Nút cam chủ đạo */
+        .btn-brand          { background-color: #fd7e14; border-color: #fd7e14; color: #fff; }
+        .btn-brand:hover    { background-color: #e96d00; border-color: #e96d00; color: #fff; }
+        .btn-outline-brand  { border-color: #fd7e14; color: #fd7e14; }
+        .btn-outline-brand:hover { background-color: #fd7e14; color: #fff; }
+    </style>
+
+    <th:block th:replace="${extraCss}"></th:block>
+</head>
+
+<!-- ═══════════════════════════════════════════════
+     FRAGMENT 2: Navbar
+     Dùng: th:replace="~{layout :: navbar('home')}"
+     activeMenu: 'home' | 'new-post'
+     ═══════════════════════════════════════════════ -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow"
+     th:fragment="navbar(activeMenu)">
+    <div class="container">
+
+        <!-- Brand -->
+        <a class="navbar-brand d-flex align-items-center gap-2" th:href="@{/}">
+            <span class="bg-warning text-dark fw-bold px-2 py-1 rounded navbar-brand-text">My</span>
+            <span class="navbar-brand-text text-white">Blog</span>
+        </a>
+
+        <!-- Toggle mobile -->
+        <button class="navbar-toggler border-0" type="button"
+                data-bs-toggle="collapse" data-bs-target="#mainNav"
+                aria-controls="mainNav" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNav">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-semibold px-3"
+                       th:classappend="${activeMenu == 'home'} ? ' active' : ''"
+                       th:href="@{/posts}">
+                        🏠 Trang chủ
+                    </a>
+                </li>
+            </ul>
+            <!-- Nút Viết bài -->
+            <a th:href="@{/posts/new}" class="btn btn-warning fw-bold px-4">
+                ✏ Viết bài mới
+            </a>
+        </div>
+    </div>
+</nav>
+
+<!-- ═══════════════════════════════════════════════
+     FRAGMENT 3: Flash Message
+     Dùng: th:replace="~{layout :: flashMessage}"
+     ═══════════════════════════════════════════════ -->
+<div th:fragment="flashMessage" class="container mt-3">
+    <div th:if="${successMsg}"
+         class="alert alert-success alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3"
+         role="alert">
+        ✅ <span th:text="${successMsg}"></span>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+    </div>
+    <div th:if="${errorMsg}"
+         class="alert alert-danger alert-dismissible fade show d-flex align-items-center gap-2 shadow-sm rounded-3"
+         role="alert">
+        ❌ <span th:text="${errorMsg}"></span>
+        <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+    </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     FRAGMENT 4: Footer
+     Dùng: th:replace="~{layout :: footer}"
+     ═══════════════════════════════════════════════ -->
+<footer th:fragment="footer"
+        class="bg-dark text-white-50 text-center py-4 mt-auto border-top border-secondary">
+    <div class="container">
+        <p class="mb-1 small">
+            &copy; 2025
+            <span class="text-warning fw-semibold">MyBlog</span>
+            &mdash; Xây dựng với Spring Boot &amp; Thymeleaf
+        </p>
+        <div class="d-flex justify-content-center gap-3 mt-1">
+            <a th:href="@{/posts}" class="text-white-50 text-decoration-none small">Trang chủ</a>
+            <span class="text-secondary">|</span>
+            <a th:href="@{/posts/new}" class="text-white-50 text-decoration-none small">Viết bài</a>
+        </div>
+    </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     FRAGMENT 5: Scripts
+     Dùng: th:replace="~{layout :: scripts(~{::script})}"
+     ═══════════════════════════════════════════════ -->
+<th:block th:fragment="scripts(extraJs)">
+    <script th:src="@{/js/bootstrap.bundle.js}"></script>
+    <th:block th:replace="${extraJs}"></th:block>
+</th:block>
+
+</html>

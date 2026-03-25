@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head th:replace="~{layout/layout :: head('Danh sách bài viết', ~{})}"></head>
+<body>
+<nav th:replace="~{layout/layout :: navbar('home')}"></nav>
+<div th:replace="~{layout/layout :: flashMessage}"></div>
+
+<main class="container mt-4">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3 class="mb-0">Danh sách bài viết</h3>
+    <a th:href="@{/posts/new}" class="btn btn-primary">Thêm bài viết</a>
+  </div>
+
+  <div class="alert alert-info" th:if="${#lists.isEmpty(posts)}">
+    Chưa có bài viết nào.
+  </div>
+
+  <div class="card mb-3" th:each="post : ${posts}">
+    <div class="card-body">
+      <h5 class="card-title" th:text="${post.title}">Tiêu đề</h5>
+      <p class="card-text text-muted mb-2" th:text="${#strings.abbreviate(post.content, 120)}">Tóm tắt nội dung</p>
+      <small class="text-secondary" th:if="${post.category != null and !#strings.isEmpty(post.category)}">
+        Danh mục: <span th:text="${post.category}">Chung</span>
+      </small>
+      <div class="mt-3 d-flex gap-2">
+        <a th:href="@{/posts/{id}(id=${post.id})}" class="btn btn-sm btn-outline-primary">Xem</a>
+        <a th:href="@{/posts/{id}/edit(id=${post.id})}" class="btn btn-sm btn-outline-secondary">Sửa</a>
+        <form th:action="@{/posts/{id}/delete(id=${post.id})}" method="post" class="d-inline">
+          <button type="submit" class="btn btn-sm btn-outline-danger" onclick="return confirm('Bạn muốn xoá bài viết này?')">Xoá</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer th:replace="~{layout/layout :: footer}"></footer>
+<div th:replace="~{layout/layout :: scripts(~{})}"></div>
+</body>
+</html>
