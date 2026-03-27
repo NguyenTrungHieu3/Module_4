@@ -1,7 +1,12 @@
 package com.example.blog_application.controller;
 
 import com.example.blog_application.entity.Post;
+import com.example.blog_application.service.ICategoryService;
 import com.example.blog_application.service.IPostService;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,22 +16,52 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @RequestMapping("/posts")
 public class PostController {
     private final IPostService postService;
+    private final ICategoryService categoryService;
 
-    public PostController(IPostService postService) {
+    public PostController(IPostService postService, ICategoryService categoryService) {
         this.postService = postService;
+        this.categoryService = categoryService;
     }
 
     @GetMapping
-    public String listPosts(Model model) {
-        model.addAttribute("posts", postService.getAllPosts());
+    public String listPosts(
+            @RequestParam(required = false) String keyword,
+            @RequestParam(required = false) Long categoryId,
+            @PageableDefault(size = 5, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            Model model
+    ) {
+        Page<Post> posts;
+
+        if (keyword != null && !keyword.isEmpty()) {
+            posts = postService.search(keyword, pageable);
+        } else if (categoryId != null) {
+            posts = postService.findByCategory(categoryId, pageable);
+        } else {
+            posts = postService.findAllPosts(pageable);
+        }
+
+        model.addAttribute("posts", posts);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryId", categoryId);
+
         return "blog/post";
     }
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
         model.addAttribute("post", new Post());
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("isEdit", false);
-        model.addAttribute("pageTitle", "Tao bai viet moi");
+        return "blog/create-post";
+    }
+
+    @GetMapping("/{id}/edit")
+    public String showEditForm(@PathVariable Long id, Model model) {
+        Post post = postService.getPost(id);
+        model.addAttribute("post", post);
+        model.addAttribute("categories", categoryService.getAllCategories());
+        model.addAttribute("isEdit", true);
         return "blog/create-post";
     }
 

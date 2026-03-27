@@ -24,7 +24,9 @@ public class Post {
     private String content;
     @Column(length = 500)
     private String summary;
-    private String category;
+    @ManyToOne
+    @JoinColumn(name = "category_id")
+    private Category category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
