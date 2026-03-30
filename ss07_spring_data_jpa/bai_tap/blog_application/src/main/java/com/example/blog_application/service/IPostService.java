@@ -13,8 +13,6 @@ public interface IPostService {
 
     Page<Post> findAllPosts(Pageable pageable);
 
-    Post findById(Long id);
-
     Page<Post> search(String keyword, Pageable pageable);
 
     Page<Post> findByCategory(Long categoryId, Pageable pageable);

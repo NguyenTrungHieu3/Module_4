@@ -34,6 +34,7 @@ public class Post {
     @PrePersist
     private void prePersist() {
         createdAt = LocalDateTime.now();
+        updatedAt = LocalDateTime.now();
     }
 
     @PreUpdate

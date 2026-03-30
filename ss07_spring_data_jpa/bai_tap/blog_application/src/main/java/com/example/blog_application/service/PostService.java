@@ -35,11 +35,6 @@ public class PostService implements IPostService {
     }
 
     @Override
-    public Post findById(Long id) {
-        return postRepository.findById(id).orElse(null);
-    }
-
-    @Override
     public Page<Post> search(String keyword, Pageable pageable) {
         return postRepository.findByTitleContaining(keyword, pageable);
     }

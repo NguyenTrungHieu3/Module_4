@@ -19,8 +19,15 @@
     </div>
 
     <div class="mb-3">
-      <label for="category" class="form-label">Danh mục</label>
-      <input id="category" type="text" th:field="*{category}" class="form-control">
+      <label for="categoryId" class="form-label">Danh mục</label>
+      <select id="categoryId" name="categoryId" th:value="${post.category?.id}" class="form-control" required>
+        <option value="">-- Chọn danh mục --</option>
+        <option th:each="cat : ${categories}" 
+                th:value="${cat.id}" 
+                th:text="${cat.name}"
+                th:selected="${post.category != null && post.category.id == cat.id}">
+        </option>
+      </select>
     </div>
 
     <div class="mb-3">

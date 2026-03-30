@@ -1,5 +1,6 @@
 package com.example.blog_application.controller;
 
+import com.example.blog_application.entity.Category;
 import com.example.blog_application.entity.Post;
 import com.example.blog_application.service.ICategoryService;
 import com.example.blog_application.service.IPostService;
@@ -56,17 +57,15 @@ public class PostController {
         return "blog/create-post";
     }
 
-    @GetMapping("/{id}/edit")
-    public String showEditForm(@PathVariable Long id, Model model) {
-        Post post = postService.getPost(id);
-        model.addAttribute("post", post);
-        model.addAttribute("categories", categoryService.getAllCategories());
-        model.addAttribute("isEdit", true);
-        return "blog/create-post";
-    }
-
     @PostMapping
-    public String createPost(@ModelAttribute("post") Post post, RedirectAttributes redirectAttributes) {
+    public String createPost(@ModelAttribute("post") Post post,
+                             @RequestParam(required = false) Long categoryId,
+                             RedirectAttributes redirectAttributes) {
+        if (categoryId != null) {
+            Category category = new Category();
+            category.setId(categoryId);
+            post.setCategory(category);
+        }
         postService.savePost(post);
         redirectAttributes.addFlashAttribute("successMsg", "Tao bai viet thanh cong.");
         return "redirect:/posts";
@@ -91,6 +90,7 @@ public class PostController {
             return "redirect:/posts";
         }
         model.addAttribute("post", post);
+        model.addAttribute("categories", categoryService.getAllCategories());
         model.addAttribute("isEdit", true);
         model.addAttribute("pageTitle", "Cap nhat bai viet");
         return "blog/create-post";
@@ -99,6 +99,7 @@ public class PostController {
     @PostMapping("/{id}/update")
     public String updatePost(@PathVariable Long id,
                              @ModelAttribute("post") Post formPost,
+                             @RequestParam(required = false) Long categoryId,
                              RedirectAttributes redirectAttributes) {
         Post post = postService.getPost(id);
         if (post == null) {
@@ -107,7 +108,11 @@ public class PostController {
         }
 
         post.setTitle(formPost.getTitle());
-        post.setCategory(formPost.getCategory());
+        if (categoryId != null) {
+            Category category = new Category();
+            category.setId(categoryId);
+            post.setCategory(category);
+        }
         post.setContent(formPost.getContent());
         post.setSummary(formPost.getSummary());
 
