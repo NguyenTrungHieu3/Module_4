@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>Giỏ hàng</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+<div class="container mt-4">
+  <h2 class="mb-4">Giỏ hàng</h2>
+
+  <div th:if="${#lists.isEmpty(cart.items)}" class="alert alert-warning">
+    Giỏ hàng đang trống.
+  </div>
+
+  <table class="table table-bordered bg-white" th:if="${!#lists.isEmpty(cart.items)}">
+    <thead>
+    <tr>
+      <th>Tên sản phẩm</th>
+      <th>Giá</th>
+      <th>Số lượng</th>
+      <th>Thành tiền</th>
+      <th>Xóa</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="item : ${cart.items}">
+      <td>
+        <a th:href="@{/products/{id}(id=${item.product.id})}" th:text="${item.product.name}"></a>
+      </td>
+      <td th:text="${item.product.price} + ' đ'"></td>
+      <td>
+        <form th:action="@{/cart/update}" method="post" class="d-flex">
+          <input type="hidden" name="productId" th:value="${item.product.id}">
+          <input type="number" name="quantity" min="1" th:value="${item.quantity}" class="form-control me-2" style="width:100px;">
+          <button class="btn btn-info btn-sm">Cập nhật</button>
+        </form>
+      </td>
+      <td th:text="${item.subtotal} + ' đ'"></td>
+      <td>
+        <a th:href="@{/cart/remove/{id}(id=${item.product.id})}" class="btn btn-danger btn-sm">Xóa</a>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <div th:if="${!#lists.isEmpty(cart.items)}">
+    <h4>Tổng tiền: <span class="text-danger" th:text="${cart.totalMoney} + ' đ'"></span></h4>
+    <a href="/cart/checkout" class="btn btn-success">Thanh toán</a>
+  </div>
+
+  <br>
+  <a href="/products" class="btn btn-secondary">Tiếp tục mua hàng</a>
+</div>
+
+</body>
+</html>
