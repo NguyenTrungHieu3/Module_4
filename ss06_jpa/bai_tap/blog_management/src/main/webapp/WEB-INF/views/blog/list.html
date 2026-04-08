@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{layout/layout :: head('Blog List', ~{})}"></head>
+
+<body>
+
+<nav th:replace="~{layout/layout :: navbar('blog')}"></nav>
+
+<div class="container mt-4">
+
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h2>Blog Management</h2>
+    <a th:href="@{/blogs/create}" class="btn btn-success">Create Blog</a>
+  </div>
+
+  <table class="table table-bordered table-hover align-middle">
+
+    <thead class="table-dark">
+    <tr>
+      <th>ID</th>
+      <th>Image</th>
+      <th>Title</th>
+      <th>Author</th>
+      <th>Category</th>
+      <th>Created Date</th>
+      <th style="width:220px">Actions</th>
+    </tr>
+    </thead>
+
+    <tbody>
+
+    <tr th:each="blog : ${blogs}">
+
+      <td th:text="${blog.id}"></td>
+
+      <td>
+        <img th:src="${blog.imageUrl}"
+             style="width:80px;height:60px;object-fit:cover"
+             class="rounded">
+      </td>
+
+      <td>
+        <strong th:text="${blog.title}"></strong>
+        <br>
+        <small class="text-muted"
+               th:text="${blog.summary}"></small>
+      </td>
+
+      <td th:text="${blog.author}"></td>
+
+      <td>
+                <span class="badge bg-primary"
+                      th:text="${blog.category}"></span>
+      </td>
+
+      <td th:text="${blog.createdAt != null ? #dates.format(blog.createdAt,'dd-MM-yyyy') : ''}"></td>
+
+      <td>
+
+        <a th:href="@{/blogs/{id}(id=${blog.id})}"
+           class="btn btn-info btn-sm">
+          View
+        </a>
+
+        <a th:href="@{/blogs/update/{id}(id=${blog.id})}"
+           class="btn btn-warning btn-sm">
+          Edit
+        </a>
+
+        <form th:action="@{/blogs/delete/{id}(id=${blog.id})}"
+              method="post"
+              style="display:inline;">
+
+          <button type="submit"
+                  class="btn btn-danger btn-sm"
+                  onclick="return confirm('Delete this blog?')">
+            Delete
+          </button>
+
+        </form>
+
+      </td>
+
+    </tr>
+
+    </tbody>
+
+  </table>
+
+</div>
+
+<th:block th:replace="~{layout/layout :: scripts(~{})}"></th:block>
+
+</body>
+</html>

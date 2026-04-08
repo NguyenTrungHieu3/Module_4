@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="~{layout/layout::head('Add Product', ~{})}"/>
+<body>
+<th:block th:replace="~{layout/layout::navbar(~{})}"/>
+<h2>Add Product</h2>
+<div class="container mt-5">
+    <div class="card shadow">
+        <div class="card-header bg-success text-white">
+            <h4 class="mb-0">Add Product</h4>
+        </div>
+
+        <div class="card-body">
+            <form th:action="@{/product/add}" method="post" th:object="${product}">
+
+<!--                <div class="mb-3">-->
+<!--                    <label class="form-label">ID</label>-->
+<!--                    <input type="text" class="form-control" th:field="*{id}">-->
+<!--                </div>-->
+
+                <div class="mb-3">
+                    <label class="form-label">Name</label>
+                    <input type="text" class="form-control" th:field="*{name}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Price</label>
+                    <input type="number" class="form-control" th:field="*{price}">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Description</label>
+                    <textarea class="form-control" th:field="*{description}"></textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">Manufacturer</label>
+                    <select class="form-select" th:field="*{manufacturer}">
+                        <option value="">-- Select Manufacturer --</option>
+                        <option th:each="manufacture:${manufacturers}" th:text="${manufacture}" th:value="${manufacture}"></option>
+                    </select>
+                </div>
+
+                <button type="submit" class="btn btn-success">Add</button>
+                <a th:href="@{/product}" class="btn btn-secondary">Cancel</a>
+
+            </form>
+        </div>
+    </div>
+</div>
+<th:block th:replace="~{layout/layout::scripts(~{})}"/>
+</body>
+</html>
